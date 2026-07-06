@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Processing - Video Studio{% endblock %}
+{% block content %}
+<div class="processing-state">
+    <div class="spinner-container">
+        <div class="spinner"></div>
+        <div class="spinner-inner"></div>
+    </div>
+    <h2 class="page-title processing-text" style="margin-bottom: 0.5rem;">Generating Your Video</h2>
+    <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto 1.5rem; line-height: 1.6;">
+        This may take a few moments depending on the audio length and number of images. Please don't close this page.
+    </p>
+    <p style="color: var(--text-dim); margin-top: 0.5rem; font-size: 0.9rem;">
+        Project: <strong style="color: var(--text);">{{ project.title }}</strong>
+    </p>
+    <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.5rem;">
+        Status: <span class="badge badge-processing">Processing</span>
+    </p>
+
+    <!-- Fun fact while waiting -->
+    <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-glass); border-radius: var(--radius); border: 1px solid var(--border-glass); max-width: 400px; animation: fadeInUp 1s ease 1s both;">
+        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic;">
+            💡 <strong style="color: var(--primary-light);">Did you know?</strong><br>
+            <span id="funFact">Your video is being rendered frame by frame with smooth crossfade transitions!</span>
+        </p>
+    </div>
+</div>
+<meta http-equiv="refresh" content="5">
+
+<script>
+// Fun facts rotation
+const facts = [
+    "Your video is being rendered frame by frame with smooth crossfade transitions!",
+    "Each image is intelligently resized to 1280×720 HD resolution.",
+    "The audio is perfectly synced to match the total duration of your slideshow.",
+    "Your video will be encoded in H.264 format for maximum compatibility.",
+    "Crossfade transitions create a cinematic flow between each image.",
+    "The output video runs at 24 frames per second for smooth playback."
+];
+let factIndex = 0;
+setInterval(() => {
+    factIndex = (factIndex + 1) % facts.length;
+    const el = document.getElementById('funFact');
+    el.style.opacity = '0';
+    setTimeout(() => {
+        el.textContent = facts[factIndex];
+        el.style.opacity = '1';
+    }, 300);
+}, 8000);
+</script>
+{% endblock %}

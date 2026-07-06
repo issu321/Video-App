@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block title %}Video Studio - Create Stunning Videos{% endblock %}
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+    <!-- Floating decorative elements -->
+    <div class="hero-float-1"></div>
+    <div class="hero-float-2"></div>
+    <div class="hero-float-3"></div>
+
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            AI-Powered Video Creation
+        </div>
+        <h1>Turn Your Photos & Audio Into Cinematic Videos</h1>
+        <p>Upload your favorite images and soundtrack. Our intelligent engine synchronizes everything into a stunning, high-quality MP4 with smooth transitions — automatically.</p>
+        <div class="hero-actions">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('main.new_project') }}" class="btn btn-primary btn-lg">Create Your Video</a>
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-glass btn-lg">My Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Get Started Free</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-glass btn-lg">Sign In</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+    <div class="container">
+        <div class="section-header animate-in">
+            <h2>Powerful Features</h2>
+            <p>Everything you need to create professional slideshow videos in minutes, not hours.</p>
+        </div>
+        <div class="card-grid stagger-children">
+            <div class="feature-card animate-in">
+                <div class="feature-icon">🎵</div>
+                <h3>Audio Sync</h3>
+                <p>Automatically calculates the perfect display duration for each image based on your audio track length. Every beat matches every frame.</p>
+            </div>
+            <div class="feature-card animate-in">
+                <div class="feature-icon">✨</div>
+                <h3>Smooth Transitions</h3>
+                <p>Elegant crossfade effects between every image. No jarring cuts — just seamless, cinematic flow from start to finish.</p>
+            </div>
+            <div class="feature-card animate-in">
+                <div class="feature-icon">🖼️</div>
+                <h3>Smart Resizing</h3>
+                <p>Intelligent center-crop and aspect ratio handling. Your images always look perfect in 1280×720 HD resolution.</p>
+            </div>
+            <div class="feature-card animate-in">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure & Private</h3>
+                <p>Your uploads are safe. Bcrypt-encrypted accounts, CSRF protection, and automatic file cleanup when you delete a project.</p>
+            </div>
+            <div class="feature-card animate-in">
+                <div class="feature-icon">⚡</div>
+                <h3>Background Processing</h3>
+                <p>Video generation runs on a background thread. Upload, relax, and come back to a finished masterpiece. No browser freezing.</p>
+            </div>
+            <div class="feature-card animate-in">
+                <div class="feature-icon">📱</div>
+                <h3>Responsive Design</h3>
+                <p>Create videos from any device. Our premium glassmorphism interface adapts beautifully to desktop, tablet, and mobile screens.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+    <div class="container">
+        <div class="section-header animate-in">
+            <h2>How It Works</h2>
+            <p>From upload to download in three simple steps. No editing skills required.</p>
+        </div>
+        <div class="steps stagger-children">
+            <div class="step animate-in">
+                <div class="step-number">1</div>
+                <h3>Upload Media</h3>
+                <p>Choose your audio track and select the images you want in your video. Drag and drop supported.</p>
+            </div>
+            <div class="step animate-in">
+                <div class="step-number">2</div>
+                <h3>Auto-Generate</h3>
+                <p>Our engine calculates timing, applies transitions, resizes images, and merges audio — all automatically.</p>
+            </div>
+            <div class="step animate-in">
+                <div class="step-number">3</div>
+                <h3>Download MP4</h3>
+                <p>Preview your video in the browser and download the high-quality H.264 MP4 file to share anywhere.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- STATS -->
+<section class="section">
+    <div class="container">
+        <div class="stats-grid stagger-children">
+            <div class="stat-card animate-in">
+                <div class="stat-value">HD</div>
+                <div class="stat-label">1280×720 Output</div>
+            </div>
+            <div class="stat-card animate-in">
+                <div class="stat-value">24</div>
+                <div class="stat-label">Frames Per Second</div>
+            </div>
+            <div class="stat-card animate-in">
+                <div class="stat-value">0.5s</div>
+                <div class="stat-label">Transition Duration</div>
+            </div>
+            <div class="stat-card animate-in">
+                <div class="stat-value">AAC</div>
+                <div class="stat-label">High-Quality Audio</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-card animate-scale">
+            <h2>Ready to Create Your First Video?</h2>
+            <p>Join thousands of creators turning their memories into cinematic experiences. Free to use, no credit card required.</p>
+            <div class="hero-actions">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.new_project') }}" class="btn btn-primary btn-lg">Start Creating</a>
+                {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Create Free Account</a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-glass btn-lg">Already a Member?</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER - Branded with Mohammed Usman info -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-brand animate-in">
+            <svg width="48" height="48" viewBox="0 0 40 40" fill="none" style="margin-bottom: 0.5rem;">
+                <defs>
+                    <linearGradient id="footerLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a78bfa"/>
+                        <stop offset="100%" style="stop-color:#f472b6"/>
+                    </linearGradient>
+                </defs>
+                <rect width="40" height="40" rx="10" fill="url(#footerLogo)"/>
+                <polygon points="14,10 30,20 14,30" fill="white"/>
+            </svg>
+            <h3>Video Studio</h3>
+            <p>Turning moments into cinematic masterpieces</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="{{ url_for('main.home') }}">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="https://github.com/issu321/Video-App" target="_blank">GitHub Repo</a>
+            <a href="https://issu321.github.io/issu321" target="_blank">Portfolio</a>
+        </div>
+
+        <div class="footer-contact">
+            <a href="mailto:jaafreeusman@gmail.com" title="Email">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                jaafreeusman@gmail.com
+            </a>
+            <a href="tel:+918884294749" title="Phone">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                +91 8884294749
+            </a>
+        </div>
+
+        <div class="footer-social">
+            <a href="https://github.com/issu321" target="_blank" title="GitHub" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a>
+            <a href="https://issu321.github.io/issu321" target="_blank" title="Portfolio" aria-label="Portfolio">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </a>
+            <a href="mailto:jaafreeusman@gmail.com" title="Email" aria-label="Email">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+        </div>
+
+        <div class="footer-bottom">
+            <p> Video Studio. Crafted with precision by <a href="https://github.com/issu321" target="_blank">Mohammed Usman</a>. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">
+                <a href="https://github.com/issu321/Video-App" target="_blank">GitHub Repository</a> • 
+                <a href="https://issu321.github.io/issu321" target="_blank">Portfolio</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Video Studio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%238b5cf6'/%3E%3Cstop offset='100%25' style='stop-color:%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)'/%3E%3Cpolygon points='35,25 75,50 35,75' fill='white'/%3E%3C/svg%3E">
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="{{ url_for('main.home') }}" class="logo">
+                <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#a78bfa"/>
+                            <stop offset="100%" style="stop-color:#f472b6"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="40" height="40" rx="10" fill="url(#logoGrad)" opacity="0.9"/>
+                    <polygon points="14,10 30,20 14,30" fill="white"/>
+                    <circle cx="30" cy="20" r="3" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+                Video Studio
+            </a>
+            <div class="nav-links">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.home') }}" class="nav-link {% if request.endpoint == 'main.home' %}active{% endif %}">Home</a>
+                    <a href="{{ url_for('main.dashboard') }}" class="nav-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}">Dashboard</a>
+                    <a href="{{ url_for('main.new_project') }}" class="nav-link {% if request.endpoint == 'main.new_project' %}active{% endif %}">Create</a>
+                    <span class="user-greeting">{{ current_user.username }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('main.home') }}" class="nav-link {% if request.endpoint == 'main.home' %}active{% endif %}">Home</a>
+                    <a href="{{ url_for('auth.login') }}" class="nav-link {% if request.endpoint == 'auth.login' %}active{% endif %}">Login</a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-sm btn-primary">Get Started</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container">
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+    // ============================================
+    // PARTICLE SYSTEM
+    // ============================================
+    (function() {
+        const canvas = document.getElementById('particles-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 60;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.hue = Math.random() > 0.5 ? 260 : 330; // Purple or pink
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${this.hue}, 80%, 70%, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `hsla(260, 60%, 70%, ${0.1 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+        animate();
+    })();
+
+    // ============================================
+    // SCROLL PROGRESS
+    // ============================================
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = (scrollTop / scrollHeight) * 100;
+        document.getElementById('scrollProgress').style.width = progress + '%';
+    });
+
+    // ============================================
+    // NAVBAR SCROLL EFFECT
+    // ============================================
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // ============================================
+    // CURSOR GLOW (Desktop only)
+    // ============================================
+    if (window.matchMedia('(pointer: fine)').matches) {
+        const cursorGlow = document.getElementById('cursorGlow');
+        let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            currentX += (mouseX - currentX) * 0.1;
+            currentY += (mouseY - currentY) * 0.1;
+            cursorGlow.style.left = currentX + 'px';
+            cursorGlow.style.top = currentY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+    } else {
+        document.getElementById('cursorGlow').style.display = 'none';
+    }
+
+    // ============================================
+    // SCROLL ANIMATIONS
+    // ============================================
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-in, .animate-scale, .animate-left, .animate-right, .stagger-children').forEach(el => {
+        observer.observe(el);
+    });
+
+    // ============================================
+    // PAGE LOAD ANIMATION
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 100);
+    });
+    </script>
+</body>
+</html>

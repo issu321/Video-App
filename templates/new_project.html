@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}New Project - Video Studio{% endblock %}
+{% block content %}
+<div class="form-card">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+                <defs>
+                    <linearGradient id="authLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#a78bfa"/>
+                        <stop offset="100%" style="stop-color:#f472b6"/>
+                    </linearGradient>
+                </defs>
+                <rect width="40" height="40" rx="10" fill="url(#authLogo)"/>
+                <polygon points="14,10 30,20 14,30" fill="white"/>
+            </svg>
+        </div>
+        <h2 class="text-center">Create New Video</h2>
+        <p class="subtitle text-center">Upload audio and images to generate your synchronized MP4</p>
+
+        <form method="POST" action="{{ url_for('main.new_project') }}" enctype="multipart/form-data" id="projectForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="form-group">
+                <label class="form-label">Project Title</label>
+                <input type="text" name="title" class="form-input" placeholder="e.g., Summer Vacation 2024" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Audio File</label>
+                <div class="file-upload-zone" id="audioZone">
+                    <div class="file-upload-icon">🎵</div>
+                    <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Drop your audio file here or click to browse</p>
+                    <input type="file" name="audio" class="form-input" accept="audio/*" required style="position: absolute; inset: 0; opacity: 0; cursor: pointer;">
+                </div>
+                <small class="form-hint">Supported: MP3, WAV, AAC, OGG, FLAC, M4A, WMA (Max 50MB)</small>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Images</label>
+                <div class="file-upload-zone" id="imagesZone">
+                    <div class="file-upload-icon">🖼️</div>
+                    <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Drop your images here or click to browse</p>
+                    <input type="file" name="images" class="form-input" accept="image/*" multiple required style="position: absolute; inset: 0; opacity: 0; cursor: pointer;">
+                </div>
+                <small class="form-hint">Select multiple images. They will appear in the order selected. Supported: PNG, JPG, GIF, WEBP, BMP</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;" id="submitBtn">
+                Generate Video
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+// File upload zone interactions
+['audioZone', 'imagesZone'].forEach(id => {
+    const zone = document.getElementById(id);
+    const input = zone.querySelector('input[type="file"]');
+
+    zone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        zone.classList.add('dragover');
+    });
+
+    zone.addEventListener('dragleave', () => {
+        zone.classList.remove('dragover');
+    });
+
+    zone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+    });
+
+    input.addEventListener('change', (e) => {
+        const files = e.target.files;
+        const icon = zone.querySelector('.file-upload-icon');
+        const text = zone.querySelector('p');
+        if (files.length > 0) {
+            icon.textContent = '✅';
+            text.textContent = files.length === 1 ? files[0].name : `${files.length} files selected`;
+            text.style.color = 'var(--success)';
+        }
+    });
+});
+
+// Form submission animation
+document.getElementById('projectForm').addEventListener('submit', function() {
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '<span class="processing-dots">Generating Video</span>';
+    btn.disabled = true;
+    btn.style.opacity = '0.8';
+});
+</script>
+{% endblock %}

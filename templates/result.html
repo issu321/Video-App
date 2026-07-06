@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Result - Video Studio{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="result-header animate-in">
+        <h1 class="page-title">{{ project.title }}</h1>
+        <span class="badge badge-completed" style="margin-top: 0.5rem; display: inline-block;">Completed</span>
+    </div>
+
+    <div class="video-container animate-scale">
+        <video controls autoplay playsinline>
+            <source src="{{ url_for('main.serve_video', project_id=project.id) }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="result-actions animate-in">
+        <a href="{{ url_for('main.download', project_id=project.id) }}" class="btn btn-success btn-lg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download MP4
+        </a>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-glass btn-lg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Dashboard
+        </a>
+    </div>
+
+    <div class="card result-details animate-in">
+        <h3>Project Details</h3>
+        <p><strong>Created:</strong> {{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        <p><strong>Completed:</strong> {{ project.completed_at.strftime('%Y-%m-%d %H:%M') if project.completed_at else 'N/A' }}</p>
+        <p><strong>Images used:</strong> {{ project.images.count() }}</p>
+        <p><strong>Status:</strong> <span class="badge badge-completed">{{ project.status }}</span></p>
+    </div>
+</div>
+{% endblock %}
