@@ -1,4 +1,5 @@
 <div align="center">
+🎬 **Video Studio** is an AI-powered video generation platform that transforms user-uploaded audio and images into engaging, high-quality videos through an intuitive and modern web interface. Built for creators, developers, and businesses, it streamlines automated video production with speed, scalability, and simplicity.
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=8b5cf6,7c3aed,f472b6,22d3ee&height=200&section=header&text=Video%20Studio&fontSize=60&fontColor=ffffff&animation=twinkling&fontAlignY=35&desc=AI-Powered%20Video%20Creation%20Engine&descAlignY=55&descSize=18">
 
