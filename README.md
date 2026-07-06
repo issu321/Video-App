@@ -527,6 +527,12 @@ Edit `config.py` to customize:
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=8b5cf6,7c3aed,f472b6,22d3ee&height=100&section=footer&text=Crafted%20with%20precision%20by%20Mohammed%20Usman&fontSize=20&fontColor=ffffff&animation=twinkling">
 
-**Video Studio © 2024 — All rights reserved**
+<p align="center">
+  Video Studio &copy; <span id="year"></span> — All rights reserved
+</p>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 
 </div>
